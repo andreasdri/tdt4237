@@ -45,6 +45,10 @@ class AdminController extends Controller
 
     public function deletePost($postId)
     {
+        if($this->auth->isAdmin()){
+            $this->app->flash('info', "Need to be admin to do that. Please log in..");
+            $this->app->redirect('/login');
+        }
         if ($this->postRepository->deleteByPostid($postId) === 1) {
             $this->app->flash('info', "Sucessfully deleted '$postId'");
             $this->app->redirect('/admin');
