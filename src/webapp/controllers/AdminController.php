@@ -45,6 +45,17 @@ class AdminController extends Controller
 
     public function deletePost($postId)
     {
+
+        if(!$this->auth->check()){ // Not logged in - no access
+            $this->notAllowedAccess();
+            return;
+        }
+        if(!$this->auth->isAdmin()){ // Not admin - no access
+            $this->notAllowedAccess();
+            return;
+        }
+
+
         if ($this->postRepository->deleteByPostid($postId) === 1) {
             $this->app->flash('info', "Sucessfully deleted '$postId'");
             $this->app->redirect('/admin');
@@ -53,5 +64,14 @@ class AdminController extends Controller
 
         $this->app->flash('info', "An error ocurred. Unable to delete user '$username'.");
         $this->app->redirect('/admin');
+
+
+    }
+
+    private function notAllowedAccess()
+    {
+        $this->app->flash('info', "Need to be admin to do that. Please log in ...");
+        $this->app->redirect('/');
+        return;
     }
 }
