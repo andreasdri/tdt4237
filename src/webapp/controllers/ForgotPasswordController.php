@@ -23,13 +23,18 @@ class ForgotPasswordController extends Controller {
     function submitName() {
         $username = $this->app->request->post('username');
         if($username != "") {
-            $this->app->redirect('/forgot/' . $username);
+            $user = $this->userRepository->findByUser($username); // Find user
+            if($user) { // if valid
+                $this->confirm($user); // confirm
+            }else{ // Invalid username, let user try again
+                $this->app->flash('error', 'We did not find a user with that username.');
+                $this->app->redirect('/forgot');
+            }
         }
-        else {
+        else { // No username entered
             $this->render('forgotPassword.twig');
             $this->app->flash("error", "Please input a username");
         }
-
     }
 
     function confirmForm($username) {
@@ -42,7 +47,7 @@ class ForgotPasswordController extends Controller {
         }
     }
 
-    function confirm() {
+    function confirm($username) {
         $this->app->flash('success', 'Thank you! The password was sent to your email');
         // $sendmail
 
