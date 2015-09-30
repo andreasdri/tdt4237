@@ -48,13 +48,13 @@ class RegistrationFormValidation extends Validator
             $this->validationErrors[] = "Post code must be exactly four digits";
         }
 
-        if(strlen($username > 100)){
+        if(strlen($username) > 100){
             $this->validationErrors[] = 'Username too long.';
-        };
+        }
 
         if($this->userRepository->findByUser($username)){
             $this->validationErrors[] = 'Username is already in use.';
-        };
+        }
 
         if (preg_match('/^[A-Za-z0-9_]+$/', $username) === 0) {
             $this->validationErrors[] = 'Username can only contain letters and numbers';
