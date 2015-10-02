@@ -37,29 +37,9 @@ class ForgotPasswordController extends Controller {
         }
     }
 
-    function confirmForm($username) {
-        if($username != "") {
-            $user = $this->userRepository->findByUser($username);
-            $this->render('forgotPasswordConfirm.twig', ['user' => $user]);
-        }
-        else {
-            $this->app->flashNow("error", "Please write in a username");
-        }
-    }
-
     function confirm($username) {
         $this->app->flash('success', 'Thank you! The password was sent to your email');
         // $sendmail
-
         $this->app->redirect('/login');
     }
-
-    function deny() {
-
-    }
-
-
-
-
-
-} 
+}
