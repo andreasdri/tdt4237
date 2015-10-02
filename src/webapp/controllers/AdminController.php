@@ -33,12 +33,21 @@ class AdminController extends Controller
 
     public function delete($username)
     {
+        if(!$this->auth->check()){ // Not logged in - no access
+            $this->notAllowedAccess();
+            return;
+        }
+        if(!$this->auth->isAdmin()){ // Not admin - no access
+            $this->notAllowedAccess();
+            return;
+        }
+
         if ($this->userRepository->deleteByUsername($username) === 1) {
             $this->app->flash('info', "Sucessfully deleted '$username'");
             $this->app->redirect('/admin');
             return;
         }
-        
+
         $this->app->flash('info', "An error ocurred. Unable to delete user '$username'.");
         $this->app->redirect('/admin');
     }
