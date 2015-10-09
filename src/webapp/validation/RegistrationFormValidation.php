@@ -3,15 +3,16 @@
 namespace tdt4237\webapp\validation;
 
 use tdt4237\webapp\models\User;
+use tdt4237\webapp\repository\UserRepository;
 
-class RegistrationFormValidation
+class RegistrationFormValidation extends Validator
 {
     const MIN_USER_LENGTH = 3;
-    
     private $validationErrors = [];
     
     public function __construct($username, $password, $fullname, $address, $postcode)
     {
+        parent::__construct();
         return $this->validate($username, $password, $fullname, $address, $postcode);
     }
     
@@ -45,6 +46,14 @@ class RegistrationFormValidation
 
         if (strlen($postcode) != "4") {
             $this->validationErrors[] = "Post code must be exactly four digits";
+        }
+
+        if(strlen($username) > 100){
+            $this->validationErrors[] = 'Username too long.';
+        }
+
+        if($this->userRepository->findByUser($username)){
+            $this->validationErrors[] = 'Username is already in use.';
         }
 
         if (preg_match('/^[A-Za-z0-9_]+$/', $username) === 0) {
