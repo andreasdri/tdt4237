@@ -6,7 +6,7 @@
 
     {% for post in posts %}
         <div class="post">
-            <a href="/posts/{{ post.postId }}">{{ post.title}}</a> by  <a href="/user/{{ post.author|raw }}"> {{ post.author|raw }}</a>. Posted on {{ post.date }}
+            <a href="/posts/{{ post.postId }}">{{ post.title}}</a> by  <a href="/user/{{ post.author }}"> {{ post.author }}</a>. Posted on {{ post.date }}
         </div>
     {% else %}
         There are no posts as of yet
