@@ -38,9 +38,6 @@ class PostController extends Controller
 
         }
 
-
-
-
         $this->render('showpost.twig', [
             'post' => $post,
             'comments' => $comments,
@@ -92,7 +89,7 @@ class PostController extends Controller
             $request = $this->app->request;
             $title = $request->post('title');
             $content = $request->post('content');
-            $author = $request->post('author');
+            $author = $this->auth->user()->getUsername(); // Username of logged in user
             $date = date("dmY");
 
             $validation = new PostValidation($title, $author, $content);
@@ -103,7 +100,7 @@ class PostController extends Controller
                 $post->setContent($content);
                 $post->setDate($date);
                 $savedPost = $this->postRepository->save($post);
-                $this->app->redirect('/posts/' . $savedPost . '?msg="Post succesfully posted');
+                $this->app->redirect('/posts/' . $savedPost . '?msg=Post succesfully posted');
             }
         }
 
