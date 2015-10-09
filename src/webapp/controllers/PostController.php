@@ -26,6 +26,10 @@ class PostController extends Controller
 
     public function show($postId)
     {
+        if(!$this->auth->check()){
+            $this->app->flash('info', 'You have to be logged in to view a post.');
+            $this->app->redirect('/login');
+        }
         $post = $this->postRepository->find($postId);
         $comments = $this->commentRepository->findByPostId($postId);
         $request = $this->app->request;
@@ -37,9 +41,6 @@ class PostController extends Controller
             $variables['msg'] = $message;
 
         }
-
-
-
 
         $this->render('showpost.twig', [
             'post' => $post,
@@ -86,7 +87,7 @@ class PostController extends Controller
     public function create()
     {
         if ($this->auth->guest()) {
-            $this->app->flash("info", "You must be logged on to create a post");
+            $this->app->flash("info", "You must be logged in to create a post");
             $this->app->redirect("/login");
         } else {
             $request = $this->app->request;
