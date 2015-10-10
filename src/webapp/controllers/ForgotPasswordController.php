@@ -25,7 +25,7 @@ class ForgotPasswordController extends Controller {
         if($username != "") {
             $user = $this->userRepository->findByUser($username); // Find user
             if($user) { // if valid
-                $this->confirm($user); // confirm
+                $this->confirm(); // confirm
             }else{ // Invalid username, let user try again
                 $this->app->flash('error', 'We did not find a user with that username.');
                 $this->app->redirect('/forgot');
@@ -37,7 +37,7 @@ class ForgotPasswordController extends Controller {
         }
     }
 
-    function confirm($username) {
+    function confirm() {
         $this->app->flash('success', 'Thank you! The password was sent to your email');
         // $sendmail
         $this->app->redirect('/login');
