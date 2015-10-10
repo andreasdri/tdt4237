@@ -15,13 +15,13 @@ class AdminController extends Controller
     public function index()
     {
         if ($this->auth->guest()) {
-            $this->app->flash('info', "You must be logged in to view the admin page.");
-            $this->app->redirect('/');
+            $this->notAllowedAccess(true);
+            return;
         }
 
         if (! $this->auth->isAdmin()) {
-            $this->app->flash('info', "You must be administrator to view the admin page.");
-            $this->app->redirect('/');
+            $this->notAllowedAccess(false);
+            return;
         }
 
         $variables = [
@@ -33,12 +33,21 @@ class AdminController extends Controller
 
     public function delete($username)
     {
+        if(!$this->auth->check()){ // Not logged in - no access
+            $this->notAllowedAccess(true);
+            return;
+        }
+        if(!$this->auth->isAdmin()){ // Not admin - no access
+            $this->notAllowedAccess(false);
+            return;
+        }
+
         if ($this->userRepository->deleteByUsername($username) === 1) {
             $this->app->flash('info', "Sucessfully deleted '$username'");
             $this->app->redirect('/admin');
             return;
         }
-        
+
         $this->app->flash('info', "An error ocurred. Unable to delete user '$username'.");
         $this->app->redirect('/admin');
     }
@@ -47,11 +56,11 @@ class AdminController extends Controller
     {
 
         if(!$this->auth->check()){ // Not logged in - no access
-            $this->notAllowedAccess();
+            $this->notAllowedAccess(false);
             return;
         }
         if(!$this->auth->isAdmin()){ // Not admin - no access
-            $this->notAllowedAccess();
+            $this->notAllowedAccess(true);
             return;
         }
 
@@ -68,9 +77,18 @@ class AdminController extends Controller
 
     }
 
-    private function notAllowedAccess()
+    private function notAllowedAccess($isLoggedIn)
     {
-        $this->app->flash('info', "Need to be admin to do that. Please log in ...");
+        $errorMessage = "";
+
+        if ($isLoggedIn) {
+            $errorMessage = "You must be logged in to view the admin page.";
+        }
+        else {
+            $errorMessage = "You must be administrator to view the admin page.";
+        }
+
+        $this->app->flash('info', $errorMessage);
         $this->app->redirect('/');
         return;
     }
