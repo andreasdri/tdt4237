@@ -9,18 +9,18 @@ class RegistrationFormValidation extends Validator
 {
     const MIN_USER_LENGTH = 3;
     private $validationErrors = [];
-    
+
     public function __construct($username, $password, $fullname, $address, $postcode)
     {
         parent::__construct();
         return $this->validate($username, $password, $fullname, $address, $postcode);
     }
-    
+
     public function isGoodToGo()
     {
         return empty($this->validationErrors);
     }
-    
+
     public function getValidationErrors()
     {
         return $this->validationErrors;
@@ -30,6 +30,15 @@ class RegistrationFormValidation extends Validator
     {
         if (empty($password)) {
             $this->validationErrors[] = 'Password cannot be empty';
+        }
+
+        // http://stackoverflow.com/questions/4366730/check-if-string-contains-specific-words
+        if (strpos($password, $username) !== false || strpos($password, $fullname) !== false) {
+            $this->validationErrors[] = 'Password cannot contain username or fullname';
+        }
+
+        if (strlen($password) < 10) {
+            $this->validationErrors[] = 'Password must be at least 10 characters';
         }
 
         if(empty($fullname)) {
