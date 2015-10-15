@@ -12,17 +12,17 @@ class PostRepository
     /**
      * @var PDO
      */
-    private $db;
+    private $pdo;
 
-    public function __construct(PDO $db)
+    public function __construct(PDO $pdo)
     {
-        $this->db = $db;
+        $this->pdo = $pdo;
     }
-    
+
     public static function create($id, $author, $title, $content, $date)
     {
         $post = new Post;
-        
+
         return $post
             ->setPostId($id)
             ->setAuthor($author)
@@ -33,35 +33,29 @@ class PostRepository
 
     public function find($postId)
     {
-        $sql  = "SELECT * FROM posts WHERE postId = $postId";
-        $result = $this->db->query($sql);
-        $row = $result->fetch();
+        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE postId = ?");
+        $stmt->execute(array($postId));
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if($row === false) {
             return false;
         }
-
 
         return $this->makeFromRow($row);
     }
 
     public function all()
     {
-        $sql   = "SELECT * FROM posts";
-        $results = $this->db->query($sql);
+        $stmt = $this->pdo->prepare("SELECT * FROM posts");
+        $stmt->execute();
+        $results = $stmt->fetchAll();
 
-        if($results === false) {
-            return [];
-            throw new \Exception('PDO error in posts all()');
-        }
-
-        $fetch = $results->fetchAll();
-        if(count($fetch) == 0) {
+        if (count($results) == 0) {
             return false;
         }
 
         return new PostCollection(
-            array_map([$this, 'makeFromRow'], $fetch)
+            array_map([$this, 'makeFromRow'], $results)
         );
     }
 
@@ -74,14 +68,13 @@ class PostRepository
             $row['content'],
             $row['date']
         );
-
-       //  $this->db = $db;
     }
 
     public function deleteByPostid($postId)
     {
-        return $this->db->exec(
-            sprintf("DELETE FROM posts WHERE postid='%s';", $postId));
+        $stmt = $this->pdo->prepare("DELETE FROM posts WHERE postId = ?");
+        $stmt->execute(array($postId));
+        return $stmt->rowCount();
     }
 
 
@@ -92,12 +85,13 @@ class PostRepository
         $content = $post->getContent();
         $date    = $post->getDate();
 
-        if ($post->getPostId() === null) {
-            $query = "INSERT INTO posts (title, author, content, date) "
-                . "VALUES ('$title', '$author', '$content', '$date')";
+        // Can't update posts
+        if ($post->getPostId() !== null) {
+          return;
         }
 
-        $this->db->exec($query);
-        return $this->db->lastInsertId();
+        $stmt = $this->pdo->prepare("INSERT INTO posts (title, author, content, date) VALUES (?, ?, ?, ?)");
+        $stmt->execute(array($title, $author, $content, $date));
+        return $this->pdo->lastInsertId();
     }
 }

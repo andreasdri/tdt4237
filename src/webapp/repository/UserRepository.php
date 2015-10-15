@@ -10,12 +10,12 @@ use tdt4237\webapp\models\User;
 
 class UserRepository
 {
-    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, isdoctor, fullname, address, postcode) VALUES('%s', '%s', '%s' , '%s' , '%s', '%s', '%s', '%s', '%s')";
-    const UPDATE_QUERY   = "UPDATE users SET email='%s', age='%s', bio='%s', isadmin='%s', isdoctor='%s', fullname ='%s', address = '%s', postcode = '%s' WHERE id='%s'";
-    const FIND_BY_NAME   = "SELECT * FROM users WHERE user='%s'";
-    const DELETE_BY_NAME = "DELETE FROM users WHERE user='%s'";
+    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, isdoctor, fullname, address, postcode) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const UPDATE_QUERY   = "UPDATE users SET email=?, age=?, bio=?, isadmin=?, isdoctor=?, fullname =?, address = ?, postcode = ? WHERE id=?";
+    const FIND_BY_NAME   = "SELECT * FROM users WHERE user=?";
+    const DELETE_BY_NAME = "DELETE FROM users WHERE user=?";
     const SELECT_ALL     = "SELECT * FROM users";
-    const FIND_FULL_NAME   = "SELECT * FROM users WHERE user='%s'";
+    const FIND_FULL_NAME   = "SELECT * FROM users WHERE user=?";
 
     /**
      * @var PDO
@@ -50,47 +50,38 @@ class UserRepository
 
     public function getNameByUsername($username)
     {
-        $query = sprintf(self::FIND_FULL_NAME, $username);
-
-        $result = $this->pdo->query($query, PDO::FETCH_ASSOC);
-        $row = $result->fetch();
+        $stmt = $this->pdo->prepare(self::FIND_FULL_NAME);
+        $stmt->execute(array($username));
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['fullname'];
-
     }
 
     public function findByUser($username)
     {
-        $query  = sprintf(self::FIND_BY_NAME, $username);
-        $result = $this->pdo->query($query, PDO::FETCH_ASSOC);
-        $row = $result->fetch();
+        $stmt = $this->pdo->prepare(self::FIND_BY_NAME);
+        $stmt->execute(array($username));
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row === false) {
             return false;
         }
-
 
         return $this->makeUserFromRow($row);
     }
 
     public function deleteByUsername($username)
     {
-        return $this->pdo->exec(
-            sprintf(self::DELETE_BY_NAME, $username)
-        );
+        $stmt = $this->pdo->prepare(self::DELETE_BY_NAME);
+        $stmt->execute(array($username));
+        return $stmt->rowCount();
     }
-
-
 
     public function all()
     {
-        $rows = $this->pdo->query(self::SELECT_ALL);
-
-        if ($rows === false) {
-            return [];
-            throw new \Exception('PDO error in all()');
-        }
-
-        return array_map([$this, 'makeUserFromRow'], $rows->fetchAll());
+        $stmt = $this->pdo->prepare(self::SELECT_ALL);
+        $stmt->execute();
+        return array_map([$this, 'makeUserFromRow'], $stmt->fetchAll());
     }
 
     public function save(User $user)
@@ -104,20 +95,37 @@ class UserRepository
 
     public function saveNewUser(User $user)
     {
-        $query = sprintf(
-            self::INSERT_QUERY, $user->getUsername(), $user->getHash(), $user->getEmail(), $user->getAge(), $user->getBio(), $user->isAdmin(), $user->getFullname(), $user->getAddress(), $user->getPostcode()
-        );
+        $stmt = $this->pdo->prepare(self::INSERT_QUERY);
+        $stmt->execute(array(
+          $user->getUsername(),
+          $user->getHash(),
+          $user->getEmail(),
+          $user->getAge(),
+          $user->getBio(),
+          $user->isAdmin(),
+          $user->getFullname(),
+          $user->getAddress(),
+          $user->getPostcode()
+        ));
 
-        return $this->pdo->exec($query);
+        return $stmt->rowCount();
     }
 
     public function saveExistingUser(User $user)
     {
-        $query = sprintf(
-            self::UPDATE_QUERY, $user->getEmail(), $user->getAge(), $user->getBio(), $user->isAdmin(), $user->getFullname(), $user->getAddress(), $user->getPostcode(), $user->getUserId()
-        );
+        $stmt = $this->pdo->prepare(self::UPDATE_QUERY);
+        $stmt->execute(array(
+          $user->getEmail(),
+          $user->getAge(),
+          $user->getBio(),
+          $user->isAdmin(),
+          $user->getFullname(),
+          $user->getAddress(),
+          $user->getPostcode(),
+          $user->getUserId()
+        ));
 
-        return $this->pdo->exec($query);
+        return $stmt->rowCount();
     }
 
 }
