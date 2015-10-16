@@ -25,6 +25,7 @@
         <label>Age:</label>
         <input type="text" name="age" value="{{ user.age }}"> <br />
 
+        <input type="hidden" name="csrf_token" value="{{csrf_token}}">
         <input type="submit" name="submit" value="Save profile">
     </form>
 {% endblock %}

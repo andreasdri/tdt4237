@@ -97,7 +97,8 @@ class UserController extends Controller
         $this->makeSureUserIsAuthenticated();
 
         $this->render('edituser.twig', [
-            'user' => $this->auth->user()
+            'user' => $this->auth->user(),
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
@@ -114,7 +115,7 @@ class UserController extends Controller
         $address = $request->post('address');
         $postcode = $request->post('postcode');
 
-        $validation = new EditUserFormValidation($email, $bio, $age);
+        $validation = new EditUserFormValidation($email, $bio, $age, $token);
 
         if ($validation->isGoodToGo()) {
             $user->setEmail(new Email($email));

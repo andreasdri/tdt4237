@@ -87,8 +87,8 @@ $app->get('/logout', $ns . 'UserController:logout')->name('logout');
 
 // Admin restricted area
 $app->get('/admin', $ns . 'AdminController:index')->name('admin');
-$app->get('/admin/delete/post/:postid', $ns . 'AdminController:deletepost');
-$app->get('/admin/delete/:username', $ns . 'AdminController:delete');
+$app->get('/admin/delete/post/:postid/:token', $ns . 'AdminController:deletepost');
+$app->get('/admin/delete/:username/:token', $ns . 'AdminController:delete');
 
 
 return $app;

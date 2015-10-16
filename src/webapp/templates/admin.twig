@@ -14,7 +14,7 @@
         <tr>
             <td>{{ user.userid }}</td>
             <td><a href="/user/{{ user.username }}">{{ user.username }}</a></td>
-            <td><a href="/admin/delete/{{ user.username }}">Delete this user</a></td>
+            <td><a href="/admin/delete/{{ user.username }}/{{ csrf_token }}">Delete this user</a></td>
         </tr>
     {% endfor %}
     </table>
@@ -31,7 +31,7 @@
         {% for post in posts %}
         <tr>
             <td><a href="/posts/{{ post.postid }}">{{ post.title }}</a></td>
-            <td><a href="/admin/delete/post/{{ post.postid }}">Delete this post</a></td>
+            <td><a href="/admin/delete/post/{{ post.postid }}/{{ csrf_token }}">Delete this post</a></td>
         </tr>
         {% endfor %}
     </table>

@@ -32,6 +32,7 @@ class LoginController extends Controller
 
         if ($this->auth->checkCredentials($user, $pass)) {
             $_SESSION['user'] = $user;
+            $_SESSION['csrf_token'] = bin2hex(openssl_random_pseudo_bytes(32));
             setcookie("user", $user);
             setcookie("password",  $pass);
 
