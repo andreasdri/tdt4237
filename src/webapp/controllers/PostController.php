@@ -35,6 +35,7 @@ class PostController extends Controller
         $request = $this->app->request;
         $message = $request->get('msg');
         $variables = [];
+        $token = $_SESSION['csrf_token'];
 
 
         if($message) {
@@ -45,7 +46,8 @@ class PostController extends Controller
         $this->render('showpost.twig', [
             'post' => $post,
             'comments' => $comments,
-            'flash' => $variables
+            'flash' => $variables,
+            'csrf_token' => $token
         ]);
 
     }
@@ -53,20 +55,31 @@ class PostController extends Controller
     public function addComment($postId)
     {
 
-        if(!$this->auth->guest()) {
-
-            $comment = new Comment();
-            $comment->setAuthor($_SESSION['user']);
-            $comment->setText($this->app->request->post("text"));
-            $comment->setDate(date("dmY"));
-            $comment->setPost($postId);
-            $this->commentRepository->save($comment);
-            $this->app->redirect('/posts/' . $postId);
-        }
-        else {
+        if ($this->auth->guest()) {
             $this->app->redirect('/login');
             $this->app->flash('info', 'you must log in to do that');
         }
+        else {
+            $author = $_SESSION['user'];
+            $text = $this->app->request->post("text");
+            $token = $this->app->request->post("csrf_token");
+
+            $validation = new PostValidation('title', $author, $text, $token);
+            if ($validation->isGoodToGo()) {
+                $comment = new Comment();
+                $comment->setAuthor($author);
+                $comment->setText($text);
+                $comment->setDate(date("dmY"));
+                $comment->setPost($postId);
+                $this->commentRepository->save($comment);
+                $this->app->redirect('/posts/' . $postId);
+            }
+
+        }
+        $this->app->flashNow('error', join('<br>', $validation->getValidationErrors()));
+        $this->app->render('createpost.twig');
+
+
 
     }
 
@@ -75,7 +88,8 @@ class PostController extends Controller
 
         if ($this->auth->check()) {
             $username = $_SESSION['user'];
-            $this->render('createpost.twig', ['username' => $username]);
+            $token = $_SESSION['csrf_token'];
+            $this->render('createpost.twig', ['username' => $username, 'csrf_token' => $token]);
         } else {
 
             $this->app->flash('error', "You need to be logged in to create a post");
@@ -93,10 +107,11 @@ class PostController extends Controller
             $request = $this->app->request;
             $title = $request->post('title');
             $content = $request->post('content');
+            $token = $request->post('csrf_token');
             $author = $this->auth->user()->getUsername(); // Username of logged in user
             $date = date("dmY");
 
-            $validation = new PostValidation($title, $author, $content);
+            $validation = new PostValidation($title, $author, $content, $token);
             if ($validation->isGoodToGo()) {
                 $post = new Post();
                 $post->setAuthor($author);

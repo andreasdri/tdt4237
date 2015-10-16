@@ -28,6 +28,8 @@
         <label>Bank card number (max length 16):</label>
         <input type="text" name="bankcard" value="{{ user.bankcard }}"> <br />
 
+        <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
         <input type="submit" name="submit" value="Save profile">
     </form>
 {% endblock %}

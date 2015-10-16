@@ -8,8 +8,8 @@ class PostValidation {
 
     private $validationErrors = [];
 
-    public function __construct($author, $title, $content) {
-        return $this->validate($author, $title, $content);
+    public function __construct($author, $title, $content, $token) {
+        return $this->validate($author, $title, $content, $token);
     }
 
     public function isGoodToGo()
@@ -22,7 +22,7 @@ class PostValidation {
     return $this->validationErrors;
     }
 
-    public function validate($author, $title, $content)
+    public function validate($author, $title, $content, $token)
     {
         if ($author == null) {
             $this->validationErrors[] = "Author needed";
@@ -34,6 +34,10 @@ class PostValidation {
 
         if ($content == null) {
             $this->validationErrors[] = "Text needed";
+        }
+
+        if (strcmp($token, $_SESSION['csrf_token']) !== 0) {
+            $this->validationErrors[] = "Token must be valid";
         }
 
         return $this->validationErrors;

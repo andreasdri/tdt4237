@@ -97,7 +97,8 @@ class UserController extends Controller
         $this->makeSureUserIsAuthenticated();
 
         $this->render('edituser.twig', [
-            'user' => $this->auth->user()
+            'user' => $this->auth->user(),
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
@@ -125,7 +126,7 @@ class UserController extends Controller
         $bankcard = $request->post('bankcard');
         $isdoctor = $request->post('isdoctor');
 
-        $validation = new EditUserFormValidation($email, $bio, $age, $bankcard);
+        $validation = new EditUserFormValidation($email, $bio, $age, $bankcard, $token);
 
         if ($validation->isGoodToGo()) {
             $user->setEmail(new Email($email));
