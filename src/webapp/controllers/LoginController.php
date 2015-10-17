@@ -33,13 +33,12 @@ class LoginController extends Controller
         if ($this->auth->checkCredentials($user, $pass)) {
             $_SESSION['user'] = $user;
             setcookie("user", $user);
-            setcookie("password",  $pass);
 
             $this->app->flash('info', "You are now successfully logged in as $user.");
             $this->app->redirect('/');
             return;
         }
-        
+
         $this->app->flashNow('error', 'Incorrect user/pass combination.');
         $this->render('login.twig', []);
     }
