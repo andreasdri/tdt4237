@@ -20,8 +20,9 @@ class LoginController extends Controller
             $this->app->redirect('/');
             return;
         }
+        $_SESSION['csrf_token'] = bin2hex(openssl_random_pseudo_bytes(32));
 
-        $this->render('login.twig', []);
+        $this->render('login.twig', ['csrf_token' => $_SESSION['csrf_token']]);
     }
 
     public function login()
@@ -29,10 +30,10 @@ class LoginController extends Controller
         $request = $this->app->request;
         $user    = $request->post('user');
         $pass    = $request->post('pass');
+        $token   = $request->post('csrf_token');
 
-        if ($this->auth->checkCredentials($user, $pass)) {
+        if (strcmp($token, $_SESSION['csrf_token']) == 0 and $this->auth->checkCredentials($user, $pass)) {
             $_SESSION['user'] = $user;
-            $_SESSION['csrf_token'] = bin2hex(openssl_random_pseudo_bytes(32));
             setcookie("user", $user);
 
             $this->app->flash('info', "You are now successfully logged in as $user.");
