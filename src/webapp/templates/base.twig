@@ -25,8 +25,9 @@
                 {% if isLoggedIn %}
                     Logged in as {{ loggedInUsername }}.<br>
                     <a href ="{{ urlFor('showposts') }}"> Show posts</a> <br>
-                    <a href="{{ urlFor('editprofile') }}">Edit profile</a> <br>
                     <a href="{{ urlFor('createpost') }}"> Create new post</a><br>
+                    <a href="{{ urlFor('editprofile') }}">Edit profile</a> <br>
+                    <a href="{{ urlFor('paymentinfo') }}">Payment information</a> <br>
                     <a href="{{ urlFor('logout') }}">Log out</a> <br>
                 {% else %}
                     <a href="{{ urlFor('newuser') }}">Create user</a> <br />
