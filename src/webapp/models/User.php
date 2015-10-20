@@ -14,7 +14,8 @@ class User
     protected $email   = null;
     protected $bio     = 'Bio is empty.';
     protected $age;
-    protected $bankcard;
+    protected $bankcard = '';
+    protected $moneyspent = 0.0;
     protected $isAdmin = 0;
     protected $isDoctor = 0;
 
@@ -80,7 +81,6 @@ class User
 
     public function setPostcode($postcode) {
         $this->postcode = $postcode;
-
     }
 
     public function isAdmin()
@@ -134,9 +134,26 @@ class User
         return $this;
     }
 
-    public function setIsDoctor($isDoctor)
-    {
-        $this->isDoctor = $isDoctor;
+    public function setBankcard($bankcard){
+        $this->bankcard = trim($bankcard);
+        return $this;
+    }
+
+    public function getBankcard(){
+        return $this->bankcard;
+    }
+
+    public function getMoneyspent(){
+        return $this->moneyspent;
+    }
+
+    public function setMoneyspent($moneyspent){
+        $this->moneyspent = $moneyspent;
+        return $this;
+    }
+
+    public function spendMoney($money){
+        $this->moneyspent += $money;
         return $this;
     }
 }
