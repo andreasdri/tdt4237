@@ -63,6 +63,8 @@ $app->post('/user/new', $ns . 'UserController:create');
 $app->get('/user/edit', $ns . 'UserController:showUserEditForm')->name('editprofile');
 $app->post('/user/edit', $ns . 'UserController:receiveUserEditForm');
 
+$app->get('/user/paymentinfo', $ns . 'UserController:showPaymentInfo')->name('paymentinfo');
+
 // Forgot password
 $app->get('/forgot', $ns . 'ForgotPasswordController:forgotPassword');
 $app->post('/forgot', $ns . 'ForgotPasswordController:submitName');

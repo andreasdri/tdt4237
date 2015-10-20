@@ -101,6 +101,15 @@ class UserController extends Controller
         ]);
     }
 
+    public function showPaymentInfo()
+    {
+        $this->makeSureUserIsAuthenticated();
+
+        $this->render('paymentinfo.twig', [
+            'user' => $this->auth->user()
+        ]);
+    }
+
     public function receiveUserEditForm()
     {
         $this->makeSureUserIsAuthenticated();
@@ -113,8 +122,9 @@ class UserController extends Controller
         $fullname = $request->post('fullname');
         $address = $request->post('address');
         $postcode = $request->post('postcode');
+        $bankcard = $request->post('bankcard');
 
-        $validation = new EditUserFormValidation($email, $bio, $age);
+        $validation = new EditUserFormValidation($email, $bio, $age, $bankcard);
 
         if ($validation->isGoodToGo()) {
             $user->setEmail(new Email($email));
@@ -123,6 +133,7 @@ class UserController extends Controller
             $user->setFullname($fullname);
             $user->setAddress($address);
             $user->setPostcode($postcode);
+            $user->setBankcard($bankcard);
             $this->userRepository->save($user);
 
             $this->app->flashNow('info', 'Your profile was successfully saved.');
