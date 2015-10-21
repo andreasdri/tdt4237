@@ -29,8 +29,9 @@ class LoginController extends Controller
         $request = $this->app->request;
         $user    = $request->post('user');
         $pass    = $request->post('pass');
+        $token   = $request->post('csrf_token');
 
-        if ($this->auth->checkCredentials($user, $pass)) {
+        if (strcmp($token, $_SESSION['csrf_token']) == 0 and $this->auth->checkCredentials($user, $pass)) {
             $_SESSION['user'] = $user;
             setcookie("user", $user);
 

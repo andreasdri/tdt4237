@@ -61,8 +61,12 @@ class UserController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout($token)
     {
+        if (strcmp($token, $_SESSION['csrf_token']) !== 0) {
+            $this->app->flash('info', "Wrong session token.");
+            return;
+        }
         $this->auth->logout();
         $this->app->redirect('/');
     }
@@ -96,9 +100,7 @@ class UserController extends Controller
     {
         $this->makeSureUserIsAuthenticated();
 
-        $this->render('edituser.twig', [
-            'user' => $this->auth->user()
-        ]);
+        $this->render('edituser.twig', ['user' => $this->auth->user()]);
     }
 
     public function showPaymentInfo()
@@ -125,7 +127,7 @@ class UserController extends Controller
         $bankcard = $request->post('bankcard');
         $isdoctor = $request->post('isdoctor');
 
-        $validation = new EditUserFormValidation($email, $bio, $age, $bankcard);
+        $validation = new EditUserFormValidation($email, $bio, $age, $bankcard, $token);
 
         if ($validation->isGoodToGo()) {
             $user->setEmail(new Email($email));

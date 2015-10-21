@@ -31,7 +31,7 @@ class AdminController extends Controller
         $this->render('admin.twig', $variables);
     }
 
-    public function delete($username)
+    public function delete($username, $token)
     {
         if(!$this->auth->check()){ // Not logged in - no access
             $this->notAllowedAccess(true);
@@ -39,6 +39,12 @@ class AdminController extends Controller
         }
         if(!$this->auth->isAdmin()){ // Not admin - no access
             $this->notAllowedAccess(false);
+            return;
+        }
+
+        if (strcmp($token, $_SESSION['csrf_token']) !== 0) {
+            $this->app->flash('info', "Wrong session token.");
+            $this->app->redirect('/admin');
             return;
         }
 
@@ -52,7 +58,7 @@ class AdminController extends Controller
         $this->app->redirect('/admin');
     }
 
-    public function deletePost($postId)
+    public function deletePost($postId, $token)
     {
 
         if(!$this->auth->check()){ // Not logged in - no access
@@ -61,6 +67,12 @@ class AdminController extends Controller
         }
         if(!$this->auth->isAdmin()){ // Not admin - no access
             $this->notAllowedAccess(true);
+            return;
+        }
+
+        if (strcmp($token, $_SESSION['csrf_token']) !== 0) {
+            $this->app->flash('info', "Wrong session token.");
+            $this->app->redirect('/admin');
             return;
         }
 
