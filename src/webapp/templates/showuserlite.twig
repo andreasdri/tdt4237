@@ -10,22 +10,26 @@
 {% if user %}
     <table>
         <tr>
-            <th>Id</th>
-            <th>{{ user.userid }}</th>
-            <tr></tr>
-            <th>Username:</th>
-            <td>{{ user.username }}</th>
-            <tr></tr>
-            <th>Bio:</th>
+            <td>Id</th>
+            <td>{{ user.userid }}</th>
+        </tr>
+        <tr>
+            <td>Username:</td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td>Bio:</td>
             <td>{{ user.bio }}</td>
-            <tr></tr>
-            <th>Age:</th>
+        </tr>
+        <tr>
+            <td>Age:</td>
             <td>{{ user.age }}</td>
-            <tr></tr>
+        </tr>
 
-
-
-
+        <tr>
+            <td>Doctor:</td>
+            <td>{{ user.isdoctor == '1' ? 'Yes' : 'No' }}</td>
+        </tr>
     </table>
 {% else %}
     Could not find a user with username "{{ username }}".
