@@ -61,6 +61,21 @@ class PostRepository
         );
     }
 
+    public function doctorPosts()
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE ispayedpost=1");
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        if (count($results) == 0) {
+            return false;
+        }
+
+        return new PostCollection(
+            array_map([$this, 'makeFromRow'], $results)
+        );
+    }
+
     public function makeFromRow($row)
     {
         return static::create(

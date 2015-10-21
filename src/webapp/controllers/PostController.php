@@ -18,7 +18,12 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = $this->postRepository->all();
+        if($this->auth->user()->isDoctor()){
+            $posts = $this->postRepository->doctorPosts();
+        }
+        else {
+            $posts = $this->postRepository->all();
+        }
 
         $posts->sortByDate();
         $this->render('posts.twig', ['posts' => $posts]);
@@ -123,8 +128,8 @@ class PostController extends Controller
             }
         }
 
-            $this->app->flashNow('error', join('<br>', $validation->getValidationErrors()));
-            $this->app->render('createpost.twig');
+            $this->app->flash('error', join('<br>', $validation->getValidationErrors()));
+            $this->app->redirect('/posts/new');
             // RENDER HERE
 
     }

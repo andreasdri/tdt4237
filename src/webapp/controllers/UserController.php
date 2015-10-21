@@ -126,6 +126,7 @@ class UserController extends Controller
         $postcode = $request->post('postcode');
         $bankcard = $request->post('bankcard');
         $isdoctor = $request->post('isdoctor');
+        $token = $request->post('csrf_token');
 
         $validation = new EditUserFormValidation($email, $bio, $age, $bankcard, $token);
 
