@@ -20,9 +20,8 @@ class LoginController extends Controller
             $this->app->redirect('/');
             return;
         }
-        $_SESSION['csrf_token'] = bin2hex(openssl_random_pseudo_bytes(32));
 
-        $this->render('login.twig', ['csrf_token' => $_SESSION['csrf_token']]);
+        $this->render('login.twig', []);
     }
 
     public function login()

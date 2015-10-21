@@ -35,8 +35,6 @@ class PostController extends Controller
         $request = $this->app->request;
         $message = $request->get('msg');
         $variables = [];
-        $token = $_SESSION['csrf_token'];
-
 
         if($message) {
             $variables['msg'] = $message;
@@ -46,8 +44,7 @@ class PostController extends Controller
         $this->render('showpost.twig', [
             'post' => $post,
             'comments' => $comments,
-            'flash' => $variables,
-            'csrf_token' => $token
+            'flash' => $variables
         ]);
 
     }
@@ -88,8 +85,7 @@ class PostController extends Controller
 
         if ($this->auth->check()) {
             $username = $_SESSION['user'];
-            $token = $_SESSION['csrf_token'];
-            $this->render('createpost.twig', ['username' => $username, 'csrf_token' => $token]);
+            $this->render('createpost.twig', ['username' => $username]);
         } else {
 
             $this->app->flash('error', "You need to be logged in to create a post");

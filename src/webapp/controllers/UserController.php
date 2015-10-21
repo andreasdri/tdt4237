@@ -96,10 +96,7 @@ class UserController extends Controller
     {
         $this->makeSureUserIsAuthenticated();
 
-        $this->render('edituser.twig', [
-            'user' => $this->auth->user(),
-            'csrf_token' => $_SESSION['csrf_token']
-        ]);
+        $this->render('edituser.twig', ['user' => $this->auth->user()]);
     }
 
     public function showPaymentInfo()

@@ -26,8 +26,7 @@ class AdminController extends Controller
 
         $variables = [
             'users' => $this->userRepository->all(),
-            'posts' => $this->postRepository->all(),
-            'csrf_token' => $_SESSION['csrf_token']
+            'posts' => $this->postRepository->all()
         ];
         $this->render('admin.twig', $variables);
     }
