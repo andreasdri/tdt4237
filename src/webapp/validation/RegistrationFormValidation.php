@@ -32,17 +32,15 @@ class RegistrationFormValidation extends Validator
             $this->validationErrors[] = 'Password cannot be empty';
         }
 
-        // http://stackoverflow.com/questions/4366730/check-if-string-contains-specific-words
-        if (strpos($password, $username) !== false || strpos($password, $fullname) !== false) {
-            $this->validationErrors[] = 'Password cannot contain username or fullname';
-        }
-
         if (strlen($password) < 10) {
             $this->validationErrors[] = 'Password must be at least 10 characters';
         }
 
         if(empty($fullname)) {
             $this->validationErrors[] = "Please write in your full name";
+        }
+        else if(strpos($password, $fullname) !== false) {
+            $this->validationErrors[] = 'Password cannot contain full name';
         }
 
         if(empty($address)) {
@@ -57,8 +55,11 @@ class RegistrationFormValidation extends Validator
             $this->validationErrors[] = "Post code must be exactly four digits";
         }
 
-        if(strlen($username) > 100){
-            $this->validationErrors[] = 'Username too long.';
+        if(strlen($username) > 100 or strlen($username) < self::MIN_USER_LENGTH){
+            $this->validationErrors[] = 'Username must be between 3 and 100 characters.';
+        }
+        else if (strpos($password, $username) !== false) {
+            $this->validationErrors[] = 'Password cannot contain username or fullname';
         }
 
         if($this->userRepository->findByUser($username)){
