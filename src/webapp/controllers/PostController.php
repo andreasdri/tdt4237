@@ -24,8 +24,11 @@ class PostController extends Controller
         else {
             $posts = $this->postRepository->all();
         }
-
-        $posts->sortByDate();
+        
+        if($posts){
+            $posts->sortByDate();
+        }
+        
         $this->render('posts.twig', ['posts' => $posts]);
     }
 
