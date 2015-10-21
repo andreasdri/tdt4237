@@ -127,7 +127,7 @@ class UserRepository
           $user->getAddress(),
           $user->getPostcode(),
           $user->getBankcard(),
-          $user->getMoneyspent()
+          $user->getMoneyspent(),
           $user->getUserId()
         ));
 
