@@ -10,7 +10,7 @@ use tdt4237\webapp\models\User;
 
 class UserRepository
 {
-    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, isdoctor, fullname, address, postcode, bankcard, moneyspent) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, fullname, address, postcode, bankcard, moneyspent) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const UPDATE_QUERY   = "UPDATE users SET email=?, age=?, bio=?, isadmin=?, isdoctor=?, fullname =?, address = ?, postcode = ?, bankcard = ?, moneyspent = ? WHERE id=?";
     const FIND_BY_NAME   = "SELECT * FROM users WHERE user=?";
     const DELETE_BY_NAME = "DELETE FROM users WHERE user=?";
@@ -36,6 +36,7 @@ class UserRepository
         $user->setPostcode((($row['postcode'])));
         $user->setBio($row['bio']);
         $user->setIsAdmin($row['isadmin']);
+        $user->setIsDoctor($row['isdoctor']);
         $user->setBankcard($row['bankcard']);
         //$user->setMoneyspent($row['moneyspent']);
 

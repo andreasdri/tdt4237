@@ -77,6 +77,29 @@ class AdminController extends Controller
 
     }
 
+    public function toggleDoctorStatus($username, $isDoctor)
+    {
+        if(!$this->auth->check())
+        { // Not logged in - no access
+            $this->notAllowedAccess(false);
+            return;
+        }
+
+        if(!$this->auth->isAdmin())
+        { // Not admin - no access
+            $this->notAllowedAccess(true);
+            return;
+        }
+
+        $request = $this->app->request;
+        $user = $this->userRepository->findByUser($username);
+
+        $user->setIsDoctor($isDoctor);
+        $this->userRepository->save($user);
+
+        return $this->app->redirect('/admin');
+    }
+
     private function notAllowedAccess($isLoggedIn)
     {
         $errorMessage = "";

@@ -134,6 +134,12 @@ class User
         return $this;
     }
 
+    public function setIsDoctor($isDoctor)
+    {
+        $this->isDoctor = $isDoctor;
+        return $this;
+    }
+
     public function setBankcard($bankcard){
         $this->bankcard = trim($bankcard);
         return $this;

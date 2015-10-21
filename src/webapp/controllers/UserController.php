@@ -123,6 +123,7 @@ class UserController extends Controller
         $address = $request->post('address');
         $postcode = $request->post('postcode');
         $bankcard = $request->post('bankcard');
+        $isdoctor = $request->post('isdoctor');
 
         $validation = new EditUserFormValidation($email, $bio, $age, $bankcard);
 
@@ -134,7 +135,7 @@ class UserController extends Controller
             $user->setAddress($address);
             $user->setPostcode($postcode);
             $user->setBankcard($bankcard);
-            $this->userRepository->saveExistingUser($user);
+            $this->userRepository->save($user);
 
             $this->app->flashNow('info', 'Your profile was successfully saved.');
             return $this->render('edituser.twig', ['user' => $user]);
