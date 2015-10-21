@@ -18,7 +18,12 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = $this->postRepository->all();
+        if($this->auth->user()->isDoctor()){
+            $posts = $this->postRepository->doctorPosts();
+        }
+        else {
+            $posts = $this->postRepository->all();
+        }
 
         $posts->sortByDate();
         $this->render('posts.twig', ['posts' => $posts]);
