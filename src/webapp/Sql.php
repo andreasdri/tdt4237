@@ -34,17 +34,23 @@ class Sql
 
     static function insertDummyUsers()
     {
-        $hash1 = Hash::make(bin2hex(openssl_random_pseudo_bytes(2)));
+        $hash1 = Hash::make('12345678');
         $hash2 = Hash::make('bobdylan');
         $hash3 = Hash::make('liverpool');
+        $hash4 = Hash::make('Testuser123');
+        $hash5 = Hash::make('TestDoctor');
 
         $q1 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('admin', '$hash1', 1, 'admin', 'homebase', '9090')";
-        $q2 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bob', '$hash2', 1, 'Robert Green', 'Greenland Grove 9', '2010')";
-        $q3 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bjarni', '$hash3', 1, 'Bjarni Torgmund', 'Hummerdale 12', '4120')";
+        $q2 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bob', '$hash2', 0, 'Robert Green', 'Greenland Grove 9', '2010')";
+        $q3 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bjarni', '$hash3', 0, 'Bjarni Torgmund', 'Hummerdale 12', '4120')";
+        $q11 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testuser', '$hash4', 1, 'Harald Rex', 'Hanrik Ibsens gate 1', '0010', 'harald@slottet.no', 78, 'Helt konge.', 1234567812345678)";
+        $q13 = "INSERT INTO users(user, pass, isdoctor, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testdoctor', '$hash5', 1, 'Doctor Jones', 'Hanrik Ibsens gate 1', '0010', 'drjones@aqua.no', 30, 'Call me Doctor Jones.', 1234567812345678)";
 
         self::$pdo->exec($q1);
         self::$pdo->exec($q2);
         self::$pdo->exec($q3);
+        self::$pdo->exec($q11);
+        self::$pdo->exec($q13);
 
 
         print "[tdt4237] Done inserting dummy users.".PHP_EOL;
@@ -53,9 +59,11 @@ class Sql
     static function insertPosts() {
         $q4 = "INSERT INTO posts(author, date, title, content) VALUES ('bob', '26082015', 'I have a problem', 'I have a generic problem I think its embarrasing to talk about. Someone help?')";
         $q5 = "INSERT INTO posts(author, date, title, content) VALUES ('bjarni', '26082015', 'I also have a problem', 'I generally fear very much for my health')";
+        $q10 = "INSERT INTO posts(author, date, title, content, ispayedpost) VALUES ('bob', '21102015', 'Can a doctor answer this?', 'It hurts when I pee. Do I have AIDS?', 1)";
 
         self::$pdo->exec($q4);
         self::$pdo->exec($q5);
+        self::$pdo->exec($q10);
         print "[tdt4237] Done inserting posts.".PHP_EOL;
 
     }
@@ -63,8 +71,10 @@ class Sql
     static function insertComments() {
         $q1 = "INSERT INTO comments(author, date, text, belongs_to_post) VALUES ('bjarni', '26082015', 'Don''t be shy! No reason to be afraid here',0)";
         $q2 = "INSERT INTO comments(author, date, text, belongs_to_post) VALUES ('bob', '26082015', 'I wouldn''t worry too much, really. Just relax!',1)";
+        $q12 = "INSERT INTO comments(author, date, text, belongs_to_post) VALUES ('admin', '26082015', 'This post does not meet our community guidelines. Please go kill yourself.',1)";
         self::$pdo->exec($q1);
         self::$pdo->exec($q2);
+        self::$pdo->exec($q12);
         print "[tdt4237] Done inserting comments.".PHP_EOL;
 
 
