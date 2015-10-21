@@ -123,6 +123,7 @@ class UserRepository
           $user->getAge(),
           $user->getBio(),
           $user->isAdmin(),
+          $user->isDoctor(),
           $user->getFullname(),
           $user->getAddress(),
           $user->getPostcode(),

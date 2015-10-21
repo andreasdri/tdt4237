@@ -134,7 +134,7 @@ class UserController extends Controller
             $user->setAddress($address);
             $user->setPostcode($postcode);
             $user->setBankcard($bankcard);
-            $this->userRepository->save($user);
+            $this->userRepository->saveExistingUser($user);
 
             $this->app->flashNow('info', 'Your profile was successfully saved.');
             return $this->render('edituser.twig', ['user' => $user]);
