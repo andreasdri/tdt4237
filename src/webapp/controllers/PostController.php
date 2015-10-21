@@ -104,6 +104,7 @@ class PostController extends Controller
             $title = $request->post('title');
             $content = $request->post('content');
             $token = $request->post('csrf_token');
+            $payed = $request->post('ispayedpost');
             $author = $this->auth->user()->getUsername(); // Username of logged in user
             $date = date("dmY");
 
@@ -114,6 +115,7 @@ class PostController extends Controller
                 $post->setTitle($title);
                 $post->setContent($content);
                 $post->setDate($date);
+                $post->setIsPayedPost($payed);
                 $savedPost = $this->postRepository->save($post);
                 $this->app->redirect('/posts/' . $savedPost . '?msg=Post succesfully posted');
             }
@@ -125,4 +127,3 @@ class PostController extends Controller
 
     }
 }
-
