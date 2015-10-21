@@ -61,8 +61,12 @@ class UserController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout($token)
     {
+        if (strcmp($token, $_SESSION['csrf_token']) !== 0) {
+            $this->app->flash('info', "Wrong session token.");
+            return;
+        }
         $this->auth->logout();
         $this->app->redirect('/');
     }

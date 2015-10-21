@@ -85,7 +85,7 @@ $app->get('/posts/:postid', $ns . 'PostController:show');
 $app->post('/posts/:postid', $ns . 'PostController:addComment');
 
 // Log out
-$app->get('/logout', $ns . 'UserController:logout')->name('logout');
+$app->get('/logout/:token', $ns . 'UserController:logout')->name('logout');
 
 // Admin restricted area
 $app->get('/admin', $ns . 'AdminController:index')->name('admin');

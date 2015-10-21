@@ -28,7 +28,7 @@
                     <a href="{{ urlFor('createpost') }}"> Create new post</a><br>
                     <a href="{{ urlFor('editprofile') }}">Edit profile</a> <br>
                     <a href="{{ urlFor('paymentinfo') }}">Payment information</a> <br>
-                    <a href="{{ urlFor('logout') }}">Log out</a> <br>
+                    <a href="/logout/{{csrf_token}}">Log out</a> <br>
                 {% else %}
                     <a href="{{ urlFor('newuser') }}">Create user</a> <br />
                     <a href="/login">Login</a> <br>
