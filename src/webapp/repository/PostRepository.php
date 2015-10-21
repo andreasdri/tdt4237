@@ -19,7 +19,7 @@ class PostRepository
         $this->pdo = $pdo;
     }
 
-    public static function create($id, $author, $title, $content, $date)
+    public static function create($id, $author, $title, $content, $date, $payed, $isAnswered)
     {
         $post = new Post;
 
@@ -28,7 +28,9 @@ class PostRepository
             ->setAuthor($author)
             ->setTitle($title)
             ->setContent($content)
-            ->setDate($date);
+            ->setDate($date)
+            ->setIsPayedPost($payed)
+            ->setIsAnswered($isAnswered);
     }
 
     public function find($postId)
@@ -66,7 +68,9 @@ class PostRepository
             $row['author'],
             $row['title'],
             $row['content'],
-            $row['date']
+            $row['date'],
+            $row['ispayedpost'],
+            $row['isanswered']
         );
     }
 
@@ -84,14 +88,16 @@ class PostRepository
         $author = $post->getAuthor();
         $content = $post->getContent();
         $date    = $post->getDate();
+        $payed = $post->isPayedPost();
+        $answered = $post->isAnswered();
 
         // Can't update posts
         if ($post->getPostId() !== null) {
           return;
         }
 
-        $stmt = $this->pdo->prepare("INSERT INTO posts (title, author, content, date) VALUES (?, ?, ?, ?)");
-        $stmt->execute(array($title, $author, $content, $date));
+        $stmt = $this->pdo->prepare("INSERT INTO posts (title, author, content, date, ispayedpost, isanswered) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute(array($title, $author, $content, $date, $payed, $answered));
         return $this->pdo->lastInsertId();
     }
 }
