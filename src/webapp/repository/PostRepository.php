@@ -60,17 +60,17 @@ class PostRepository
             array_map([$this, 'makeFromRow'], $results)
         );
     }
-    
+
     public function doctorPosts()
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE ispaidpost=1");
+        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE ispayedpost=1");
         $stmt->execute();
         $results = $stmt->fetchAll();
-        
+
         if (count($results) == 0) {
             return false;
         }
-        
+
         return new PostCollection(
             array_map([$this, 'makeFromRow'], $results)
         );

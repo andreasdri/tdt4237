@@ -128,8 +128,8 @@ class PostController extends Controller
             }
         }
 
-            $this->app->flashNow('error', join('<br>', $validation->getValidationErrors()));
-            $this->app->render('createpost.twig');
+            $this->app->flash('error', join('<br>', $validation->getValidationErrors()));
+            $this->app->redirect('/posts/new');
             // RENDER HERE
 
     }
