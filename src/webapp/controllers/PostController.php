@@ -61,7 +61,7 @@ class PostController extends Controller
             $text = $this->app->request->post("text");
             $token = $this->app->request->post("csrf_token");
 
-            $validation = new PostValidation('title', $author, $text, $token);
+            $validation = new PostValidation('title', $author, $text, $token, false);
             if ($validation->isGoodToGo()) {
                 $comment = new Comment();
                 $comment->setAuthor($author);
@@ -108,7 +108,9 @@ class PostController extends Controller
             $author = $this->auth->user()->getUsername(); // Username of logged in user
             $date = date("dmY");
 
-            $validation = new PostValidation($title, $author, $content, $token);
+            $missingBankAccountWhenNeeded = $payed == '1' && $this->auth->user()->getBankcard() == '';
+            $validation = new PostValidation($title, $author, $content, $token, $missingBankAccountWhenNeeded);
+
             if ($validation->isGoodToGo()) {
                 $post = new Post();
                 $post->setAuthor($author);
