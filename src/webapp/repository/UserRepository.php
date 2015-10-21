@@ -10,8 +10,8 @@ use tdt4237\webapp\models\User;
 
 class UserRepository
 {
-    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, isdoctor, fullname, address, postcode) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const UPDATE_QUERY   = "UPDATE users SET email=?, age=?, bio=?, isadmin=?, isdoctor=?, fullname =?, address = ?, postcode = ? WHERE id=?";
+    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, isdoctor, fullname, address, postcode, bankcard, moneyspent) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const UPDATE_QUERY   = "UPDATE users SET email=?, age=?, bio=?, isadmin=?, isdoctor=?, fullname =?, address = ?, postcode = ?, bankcard = ?, moneyspent = ? WHERE id=?";
     const FIND_BY_NAME   = "SELECT * FROM users WHERE user=?";
     const DELETE_BY_NAME = "DELETE FROM users WHERE user=?";
     const SELECT_ALL     = "SELECT * FROM users";
@@ -36,6 +36,8 @@ class UserRepository
         $user->setPostcode((($row['postcode'])));
         $user->setBio($row['bio']);
         $user->setIsAdmin($row['isadmin']);
+        $user->setBankcard($row['bankcard']);
+        //$user->setMoneyspent($row['moneyspent']);
 
         if (!empty($row['email'])) {
             $user->setEmail(new Email($row['email']));
@@ -105,7 +107,9 @@ class UserRepository
           $user->isAdmin(),
           $user->getFullname(),
           $user->getAddress(),
-          $user->getPostcode()
+          $user->getPostcode(),
+          $user->getBankcard(),
+          $user->getMoneyspent()
         ));
 
         return $stmt->rowCount();
@@ -119,9 +123,12 @@ class UserRepository
           $user->getAge(),
           $user->getBio(),
           $user->isAdmin(),
+          $user->isDoctor(),
           $user->getFullname(),
           $user->getAddress(),
           $user->getPostcode(),
+          $user->getBankcard(),
+          $user->getMoneyspent(),
           $user->getUserId()
         ));
 

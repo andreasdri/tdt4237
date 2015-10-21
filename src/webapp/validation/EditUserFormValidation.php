@@ -6,14 +6,14 @@ class EditUserFormValidation
 {
     private $validationErrors = [];
     
-    public function __construct($email, $bio, $age)
+    public function __construct($email, $bio, $age, $bankcard)
     {
-        $this->validate($email, $bio, $age);
+        $this->validate($email, $bio, $age, $bankcard);
     }
     
     public function isGoodToGo()
     {
-        return \count($this->validationErrors) === 0;
+        return count($this->validationErrors) === 0;
     }
     
     public function getValidationErrors()
@@ -21,11 +21,12 @@ class EditUserFormValidation
         return $this->validationErrors;
     }
 
-    private function validate($email, $bio, $age)
+    private function validate($email, $bio, $age, $bankcard)
     {
         $this->validateEmail($email);
         $this->validateAge($age);
         $this->validateBio($bio);
+        $this->validateBankcard($bankcard);
     }
     
     private function validateEmail($email)
@@ -46,6 +47,13 @@ class EditUserFormValidation
     {
         if (empty($bio)) {
             $this->validationErrors[] = 'Bio cannot be empty';
+        }
+    }
+
+    private function validateBankcard($bankcard)
+    {
+        if(strlen($bankcard) > 0 && strlen($bankcard) !== 16){
+            $this->validationErrors[] = 'Bank card number has to be exactly 16 characters long, or empty.';
         }
     }
 }

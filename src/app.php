@@ -16,7 +16,7 @@ chmod(__DIR__ . '/../web/uploads', 0700);
 
 $app = new Slim([
     'templates.path' => __DIR__.'/webapp/templates/',
-    'debug' => false,
+    'debug' => true,
     'view' => new Twig()
 
 ]);
@@ -62,6 +62,8 @@ $app->post('/user/new', $ns . 'UserController:create');
 // Edit logged in user
 $app->get('/user/edit', $ns . 'UserController:showUserEditForm')->name('editprofile');
 $app->post('/user/edit', $ns . 'UserController:receiveUserEditForm');
+
+$app->get('/user/paymentinfo', $ns . 'UserController:showPaymentInfo')->name('paymentinfo');
 
 // Forgot password
 $app->get('/forgot', $ns . 'ForgotPasswordController:forgotPassword');
