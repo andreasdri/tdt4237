@@ -97,7 +97,7 @@ class AdminController extends Controller
         $user->setIsDoctor($isDoctor);
         $this->userRepository->save($user);
 
-        return $this->app->redirect('/user/edit');
+        return $this->app->redirect('/admin');
     }
 
     private function notAllowedAccess($isLoggedIn)
