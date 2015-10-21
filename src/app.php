@@ -91,6 +91,6 @@ $app->get('/logout/:token', $ns . 'UserController:logout')->name('logout');
 $app->get('/admin', $ns . 'AdminController:index')->name('admin');
 $app->get('/admin/delete/post/:postid/:token', $ns . 'AdminController:deletepost');
 $app->get('/admin/delete/:username/:token', $ns . 'AdminController:delete');
-$app->get('/admin/doctor/:username/:isdoctor', $ns . 'AdminController:toggleDoctorStatus');
+$app->get('/admin/doctor/:username/:isdoctor/:token', $ns . 'AdminController:toggleDoctorStatus');
 
 return $app;
