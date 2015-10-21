@@ -52,8 +52,8 @@ class EditUserFormValidation
 
     private function validateBankcard($bankcard)
     {
-        if(strlen($bankcard) > 0 && strlen($bankcard) !== 16){
-            $this->validationErrors[] = 'Bank card number has to be exactly 16 characters long, or empty.';
+        if(strlen($bankcard) > 0 && strlen($bankcard) !== 16 || !ctype_digit($bankcard)){
+            $this->validationErrors[] = 'Bank card number has to be exactly 16 integers long, or empty.';
         }
     }
 }
