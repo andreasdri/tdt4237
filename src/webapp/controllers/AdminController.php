@@ -92,7 +92,6 @@ class AdminController extends Controller
         }
 
         $request = $this->app->request;
-        $isdoctor = $request->post('isdoctor');
         $user = $this->userRepository->findByUser($username);
 
         $user->setIsDoctor($isDoctor);
