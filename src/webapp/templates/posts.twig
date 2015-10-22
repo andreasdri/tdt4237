@@ -8,7 +8,8 @@
         <div class="post">
             <a href="/posts/{{ post.postId }}">{{ post.title}}</a> by
             <a href="/user/{{ post.author }}"> {{ post.author }}</a>. Posted on {{ post.date }}
-            {% if post.isPayedPost %}<b style="color:red;">Question for a doctor</b> {% endif %}
+            {% if post.isPayedPost and not post.isAnswered %}<b style="color:red;">Question for a doctor</b>
+            {% elseif post.isAnswered%} <b style="color:green;">Answered by doctor </b> {% endif %}
         </div>
     {% else %}
         There are no posts as of yet
