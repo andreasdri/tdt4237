@@ -96,6 +96,14 @@ class PostRepository
         return $stmt->rowCount();
     }
 
+    public function update(Post $post) {
+        $answered = $post->isAnswered();
+        $postId = $post->getPostId();
+
+        $stmt = $this->pdo->prepare("UPDATE posts SET isanswered=? WHERE postId=?");
+        $stmt->execute(array($answered, $postId));
+        return $this->pdo->lastInsertId();
+    }
 
     public function save(Post $post)
     {
