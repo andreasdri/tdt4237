@@ -47,6 +47,12 @@ class PostController extends Controller
         }
 
         $comments = $this->commentRepository->findByPostId($postId);
+
+        foreach ($comments as $comment) { // Get isDoctorStatus for each commenter
+            $authorName = $comment->getAuthor();
+            $comment->authorIsDoctor = $this->userRepository->findByUser($authorName)->isDoctor();
+        }
+
         $request = $this->app->request;
         $message = $request->get('msg');
         $variables = [];
