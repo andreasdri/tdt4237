@@ -22,6 +22,13 @@ class ForgotPasswordController extends Controller {
 
     function submitName() {
         $username = $this->app->request->post('username');
+        $token = $this->app->request->post('csrf_token');
+
+        if(strcmp($token, $_SESSION['csrf_token']) !== 0) {
+            $this->app->flash('error', 'Wrong session token.');
+            $this->app->redirect('/forgot');
+        }
+
         if($username != "") {
             $user = $this->userRepository->findByUser($username); // Find user
             if($user) { // if valid
