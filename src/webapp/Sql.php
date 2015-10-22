@@ -45,12 +45,15 @@ class Sql
         $q3 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bjarni', '$hash3', 0, 'Bjarni Torgmund', 'Hummerdale 12', '4120')";
         $q11 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testuser', '$hash4', 1, 'Harald Rex', 'Henrik Ibsens gate 1', '0010', 'harald@slottet.no', 78, 'Helt konge.', 1234567812345678)";
         $q13 = "INSERT INTO users(user, pass, isdoctor, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testdoctor', '$hash5', 1, 'Doctor Jones', 'Henrik Ibsens gate 1', '0010', 'drjones@aqua.no', 30, 'Call me Doctor Jones.', 1234567812345678)";
+        $q14 = "INSERT INTO users(user, pass, isdoctor, fullname, address, postcode, email, age, bio) VALUES ('testdoctor2', '$hash5', 1, 'Doctor Dre', 'Henrik Ibsens gate 1', '0010', 'dredre@dre.com', 30, 'Call me Doctor Jones.')";
+
 
         self::$pdo->exec($q1);
         self::$pdo->exec($q2);
         self::$pdo->exec($q3);
         self::$pdo->exec($q11);
         self::$pdo->exec($q13);
+        self::$pdo->exec($q14);
 
 
         print "[tdt4237] Done inserting dummy users.".PHP_EOL;
