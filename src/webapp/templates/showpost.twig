@@ -20,6 +20,11 @@
             <br>
         {% endfor %}
         <h2>Post your comment here</h2><br />
+        {% if not post.isAnswered and isDoctor %}
+        <p>You are the first doctor to answer this post and will earn 7 $</p>
+        {% elseif post.isAnswered and isDoctor %}
+        <p>This post has been answered. You will not earn money</p>
+        {% endif %}
         <p>Comment: </p>
         <form method="post" action="">
             <textarea cols="40" rows="10" name="text" ></textarea> <br />
