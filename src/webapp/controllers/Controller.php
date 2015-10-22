@@ -31,6 +31,7 @@ class Controller
         if ($this->auth->check()) {
             $variables['isLoggedIn'] = true;
             $variables['isAdmin'] = $this->auth->isAdmin();
+            $variables['isDoctor'] = $this->auth->user()->isDoctor();
             $variables['loggedInUsername'] = $_SESSION['user'];
         }
 
