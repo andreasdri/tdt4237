@@ -76,7 +76,7 @@ class Auth
     public function isAdmin()
     {
         if ($this->check()) {
-            return $this->user()->isAdmin(); 
+            return $this->user()->isAdmin();
         }
 
         throw new Exception('Not logged in but called Auth::isAdmin() anyway');
@@ -84,6 +84,9 @@ class Auth
 
     public function logout()
     {
+        unset($_SESSION['user']);
+        unset($_SESSION['csrf_token']);
+        setcookie("user", "", time()-3600);
         session_destroy();
     }
 

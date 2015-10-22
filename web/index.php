@@ -1,6 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
+ini_set('session.use_only_cookies', TRUE);
+ini_set('session.use_trans_sid', FALSE);
+ini_set('session.cookie_lifetime', 60*60); // 60 minutes
 
 if (! extension_loaded('openssl')) {
     die('You must enable the openssl extension.');
