@@ -113,8 +113,10 @@ class PostController extends Controller
         $doctor = $this->auth->user();
         $user->spendMoney(10);
         $doctor->earnMoney(7);
+        $post->setIsAnswered(1);
         $this->userRepository->saveExistingUser($user);
         $this->userRepository->saveExistingUser($doctor);
+        $this->postRepository->update($post);
     }
 
     public function showNewPostForm()
