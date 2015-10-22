@@ -4,7 +4,11 @@
     <h3> {{ flash.msg }}</h3>
     {% if post %}
         <h2>{{ post.title }}</h2> <h4> by {{post.author }}</h4>
-        {% if post.isPayedPost %}<b style="color:red;">This question is for a doctor</b> {% endif %}
+            {% if post.isPayedPost and not post.isAnswered%}
+                <b style="color:red;">This question is for a doctor</b>
+            {% elseif post.isAnswered %}
+                <b style="color:green;">This post is for doctors, and has been answered by one.</b>
+            {% endif %}
         <p> {{ post.content }}</p>
         <lb></lb>
         <h2>COMMENTS</h2>
