@@ -111,7 +111,7 @@ class PostController extends Controller
     private function addTransaction($post) {
         $user = $this->userRepository->findByUser($post->getAuthor());
         $doctor = $this->auth->user();
-        if($user->getUserId() == $doctor->getUserId()) {
+        if($user->getUserId() == $doctor->getUserId()) { // In case a doctor answers his own question
             $doctor->spendMoney(10);
             $doctor->earnMoney(7);
             $post->setIsAnswered(1);
