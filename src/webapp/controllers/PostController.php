@@ -81,9 +81,16 @@ class PostController extends Controller
             $author = $_SESSION['user'];
             $text = $this->app->request->post("text");
             $token = $this->app->request->post("csrf_token");
+            $post = $this->postRepository->find($postId);
 
             $validation = new PostValidation('title', $author, $text, $token, false);
             if ($validation->isGoodToGo()) {
+
+                # When the post is paid for, and not answered by a doctor
+                # the doctor gets 7 $ and the user pays 10 $.
+                if ($post->isPayedPost() and !$post->isAnswered() and $this->auth->user()->isDoctor()) {
+                    $this->addTransaction($post);
+                }
                 $comment = new Comment();
                 $comment->setAuthor($author);
                 $comment->setText($text);
@@ -99,6 +106,15 @@ class PostController extends Controller
 
 
 
+    }
+
+    private function addTransaction($post) {
+        $user = $this->userRepository->findByUser($post->getAuthor());
+        $doctor = $this->auth->user();
+        $user->spendMoney(10);
+        $doctor->earnMoney(7);
+        $this->userRepository->saveExistingUser($user);
+        $this->userRepository->saveExistingUser($doctor);
     }
 
     public function showNewPostForm()
