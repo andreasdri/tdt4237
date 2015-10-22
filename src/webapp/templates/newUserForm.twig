@@ -5,7 +5,7 @@
 <h2>New user</h2>
 
 <b>{{ flash.info}}</b> <br />
-<b>{{ flash.error }}</b> <br />
+<b>{{ flash.error | raw}}</b> <br /> <!-- Errors comes from server only, and doees not contain user data. Safe to use raw. -->
 
 <form action="" method="POST">
 
