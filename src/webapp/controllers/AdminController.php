@@ -89,7 +89,7 @@ class AdminController extends Controller
 
     }
 
-    public function toggleDoctorStatus($username, $isDoctor)
+    public function toggleDoctorStatus($username, $isDoctor, $token)
     {
         if(!$this->auth->check())
         { // Not logged in - no access
@@ -102,6 +102,13 @@ class AdminController extends Controller
             $this->notAllowedAccess(true);
             return;
         }
+
+        if (strcmp($token, $_SESSION['csrf_token']) !== 0) {
+            $this->app->flash('info', "Wrong session token.");
+            $this->app->redirect('/admin');
+            return;
+        }
+
 
         $request = $this->app->request;
         $user = $this->userRepository->findByUser($username);

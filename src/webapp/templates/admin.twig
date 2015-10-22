@@ -15,7 +15,9 @@
             <td>{{ user.userid }}</td>
             <td><a href="/user/{{ user.username }}">{{ user.username }}</a></td>
             <td><a href="/admin/delete/{{ user.username }}/{{ csrf_token }}">Delete this user</a></td>
-            <td><a href="/admin/doctor/{{ user.username }}/{{ user.isdoctor == '1' ? 0 : 1 }}">{% if user.isdoctor == '1' %} Set as normal {% else %} Set as doctor {% endif %}</a>
+            <td><a href="/admin/doctor/{{ user.username }}/{{ user.isdoctor == '1' ? 0 : 1 }}/{{ csrf_token }}">
+                {% if user.isdoctor == '1' %} Set as normal {% else %} Set as doctor {% endif %}
+                </a>
             </td>
         </tr>
     {% endfor %}
