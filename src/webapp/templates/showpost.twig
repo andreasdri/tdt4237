@@ -11,7 +11,7 @@
         {% for comment in comments %}
             <div class="review">
                 <b>Author:</b> {{ comment.author }} <b> posted on: {{ comment.date }}
-                    {% if comment.authorIsDoctor %} <b style="color:red;">Doctor answer</b> {% endif %}</b>
+                    {% if comment.authorIsDoctor %} <b style="color:red;">This is a doctor answer</b> {% endif %}</b>
                 <pre> {{ comment.text }}</pre>
             </div>
         {% else %}
@@ -20,13 +20,13 @@
             <br>
             <br>
         {% endfor %}
-        <h2>Post your comment here</h2><br />
+        <h2>Post your comment</h2>
         {% if not post.isAnswered and isDoctor %}
-        <p>You are the first doctor to answer this post and will earn 7 $</p>
+            <p style="font-weight:bold;">You are the first doctor to answer this post and will earn 7 $</p>
         {% elseif post.isAnswered and isDoctor %}
-        <p>This post has been answered. You will not earn money</p>
+            <p style="font-weight:bold;">This post has been answered. You will not earn money</p>
         {% endif %}
-        <p>Comment: </p>
+        Comment: <br>
         <form method="post" action="">
             <textarea cols="40" rows="10" name="text" ></textarea> <br />
             <input type="hidden" name="csrf_token" value="{{csrf_token}}">
