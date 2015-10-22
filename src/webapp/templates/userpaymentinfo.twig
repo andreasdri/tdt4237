@@ -15,13 +15,8 @@
         {% endif %}
         <br> You can edit your card number on the <a href="{{ urlFor('editprofile') }}">edit profile page</a> <br>
 
-        {% if not isDoctor %}
-            <br> You've spent a total of {{ user.getMoneyspent() }} USD.
-        {% else %}
-            <br> You've earned a total of {{ user.getMoneyearned() }} USD.
-        {% endif %}
-
-        <!-- Place transaction history here -->
+        <br> You've <b>spent</b> a total of {{ user.moneyspent }} USD.
+        {% if isDoctor %}<br> You've <b>earned</b> a total of {{ user.moneyearned }} USD. {% endif %}
     {% else %}
         Could not find a user with username "{{ username }}".
     {% endif %}
