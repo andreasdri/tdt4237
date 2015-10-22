@@ -16,9 +16,9 @@
         <br> You can edit your card number on the <a href="{{ urlFor('editprofile') }}">edit profile page</a> <br>
 
         {% if not isDoctor %}
-        <br> You've spent a total of {{ user.getMoneyspent() }} USD.
+            <br> You've spent a total of {{ user.getMoneyspent() }} USD.
         {% else %}
-        <br> You've earned a total of {{ user.getMoneyearned() }} USD.
+            <br> You've earned a total of {{ user.getMoneyearned() }} USD.
         {% endif %}
 
         <!-- Place transaction history here -->

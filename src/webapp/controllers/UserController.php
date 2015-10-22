@@ -108,7 +108,7 @@ class UserController extends Controller
         $this->makeSureUserIsAuthenticated();
 
         $this->render('userpaymentinfo.twig', [
-        'user' => $this->auth->user()
+            'user' => $this->auth->user()
         ]);
     }
 
