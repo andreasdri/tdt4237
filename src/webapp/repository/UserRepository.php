@@ -10,8 +10,8 @@ use tdt4237\webapp\models\User;
 
 class UserRepository
 {
-    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, fullname, address, postcode, bankcard, moneyspent) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const UPDATE_QUERY   = "UPDATE users SET email=?, age=?, bio=?, isadmin=?, isdoctor=?, fullname =?, address = ?, postcode = ?, bankcard = ?, moneyspent = ? WHERE id=?";
+    const INSERT_QUERY   = "INSERT INTO users(user, pass, email, age, bio, isadmin, fullname, address, postcode, bankcard, moneyspent, moneyearned) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const UPDATE_QUERY   = "UPDATE users SET email=?, age=?, bio=?, isadmin=?, isdoctor=?, fullname =?, address = ?, postcode = ?, bankcard = ?, moneyspent = ?, moneyearned = ? WHERE id=?";
     const FIND_BY_NAME   = "SELECT * FROM users WHERE user=?";
     const DELETE_BY_NAME = "DELETE FROM users WHERE user=?";
     const SELECT_ALL     = "SELECT * FROM users";
@@ -38,7 +38,9 @@ class UserRepository
         $user->setIsAdmin($row['isadmin']);
         $user->setIsDoctor($row['isdoctor']);
         $user->setBankcard($row['bankcard']);
-        //$user->setMoneyspent($row['moneyspent']);
+        $user->setMoneyspent($row['moneyspent']);
+        $user->setMoneyearned($row['moneyearned']);
+
 
         if (!empty($row['email'])) {
             $user->setEmail(new Email($row['email']));
@@ -110,7 +112,8 @@ class UserRepository
           $user->getAddress(),
           $user->getPostcode(),
           $user->getBankcard(),
-          $user->getMoneyspent()
+          $user->getMoneyspent(),
+          $user->getMoneyearned()
         ));
 
         return $stmt->rowCount();
@@ -130,6 +133,7 @@ class UserRepository
           $user->getPostcode(),
           $user->getBankcard(),
           $user->getMoneyspent(),
+          $user->getMoneyearned(),
           $user->getUserId()
         ));
 
