@@ -34,9 +34,9 @@ class Sql
 
     static function insertDummyUsers()
     {
-        $hash1 = Hash::make('12345678');
-        $hash2 = Hash::make('bobdylan');
-        $hash3 = Hash::make('liverpool');
+        $hash1 = Hash::make('test bil helikopter hest');
+        $hash2 = Hash::make('12345dylan');
+        $hash3 = Hash::make('0liverpool1');
         $hash4 = Hash::make('Testuser123');
         $hash5 = Hash::make('TestDoctor');
 
