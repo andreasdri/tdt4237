@@ -24,11 +24,11 @@ class PostController extends Controller
         else {
             $posts = $this->postRepository->all();
         }
-        
+
         if($posts){
             $posts->sortByDate();
         }
-        
+
         $this->render('posts.twig', ['posts' => $posts]);
     }
 
@@ -39,6 +39,13 @@ class PostController extends Controller
             $this->app->redirect('/login');
         }
         $post = $this->postRepository->find($postId);
+
+        # Doctors can only view paid posts
+        if (!$post->isPayedPost() and $this->auth->user()->isDoctor())  {
+            $this->app->flash('info', 'You are not allowed to view this post');
+            $this->app->redirect('/');
+        }
+
         $comments = $this->commentRepository->findByPostId($postId);
         $request = $this->app->request;
         $message = $request->get('msg');
