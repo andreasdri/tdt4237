@@ -23,7 +23,8 @@
         <div id="container">
             <div id="navbar">
                 {% if isLoggedIn %}
-                    Logged in as {{ loggedInUsername }}.<br>
+                    Logged in as {{ loggedInUsername }}.
+                    {% if isAdmin %} You're a admin user. {% endif %} {% if isDoctor %} You're a doctor. {% endif %} <br>
                     <a href ="{{ urlFor('showposts') }}"> Show posts</a> <br>
                     <a href="{{ urlFor('createpost') }}"> Create new post</a><br>
                     <a href="{{ urlFor('editprofile') }}">Edit profile</a> <br>
