@@ -11,7 +11,7 @@
         <br> You've registered the bank account number {{ user.bankcard }}.
         <br> You can edit your card number on the <a href="{{ urlFor('editprofile') }}">edit profile page</a> <br>
 
-        <br> You've spent a total of {{ user.moneyspent }} USD.
+        <br> You've spent a total of {{ user.getMoneyspent() }} USD.
 
         <!-- Place transaction history here -->
     {% else %}

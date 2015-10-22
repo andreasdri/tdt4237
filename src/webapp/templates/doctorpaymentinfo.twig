@@ -1,0 +1,21 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+    <h2>Payment information</h2>
+
+    {{ flash.info}} <br />
+    {{ flash.error}} <br />
+
+    {% if user %}
+        <br> You've registered the bank account number {{ user.bankcard }}.
+        <br> You can edit your card number on the <a href="{{ urlFor('editprofile') }}">edit profile page</a> <br>
+
+        <br> You've earned a total of {{ user.getMoneyearned() }} USD.
+
+        <!-- Place transaction history here -->
+    {% else %}
+        Could not find a user with username "{{ username }}".
+    {% endif %}
+
+{% endblock %}

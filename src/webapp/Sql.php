@@ -17,7 +17,7 @@ class Sql
      */
     static function up()
     {
-        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass VARCHAR(50), email varchar(50) default null, fullname varchar(50), address varchar(50), postcode varchar (4), age varchar(50), bio varchar(50), isadmin INTEGER, isdoctor INTEGER, bankcard varchar(16), moneyspent DOUBLE );";
+        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass VARCHAR(50), email varchar(50) default null, fullname varchar(50), address varchar(50), postcode varchar (4), age varchar(50), bio varchar(50), isadmin INTEGER, isdoctor INTEGER, bankcard varchar(16), moneyspent DOUBLE, moneyearned DOUBLE );";
         $q6 = "CREATE TABLE posts (postId INTEGER PRIMARY KEY AUTOINCREMENT, author TEXT, title TEXT NOT NULL, content TEXT NOT NULL, date TEXT NOT NULL, ispayedpost INTEGER, isanswered INTEGER, FOREIGN KEY(author) REFERENCES users(user));";
         $q7 = "CREATE TABLE comments(commentId INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT NOT NULL, author TEXT NOT NULL, text INTEGER NOT NULL, belongs_to_post INTEGER NOT NULL, FOREIGN KEY(belongs_to_post) REFERENCES posts(postId));";
 
@@ -43,8 +43,8 @@ class Sql
         $q1 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('admin', '$hash1', 1, 'admin', 'homebase', '9090')";
         $q2 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bob', '$hash2', 0, 'Robert Green', 'Greenland Grove 9', '2010')";
         $q3 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bjarni', '$hash3', 0, 'Bjarni Torgmund', 'Hummerdale 12', '4120')";
-        $q11 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testuser', '$hash4', 1, 'Harald Rex', 'Hanrik Ibsens gate 1', '0010', 'harald@slottet.no', 78, 'Helt konge.', 1234567812345678)";
-        $q13 = "INSERT INTO users(user, pass, isdoctor, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testdoctor', '$hash5', 1, 'Doctor Jones', 'Hanrik Ibsens gate 1', '0010', 'drjones@aqua.no', 30, 'Call me Doctor Jones.', 1234567812345678)";
+        $q11 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testuser', '$hash4', 1, 'Harald Rex', 'Henrik Ibsens gate 1', '0010', 'harald@slottet.no', 78, 'Helt konge.', 1234567812345678)";
+        $q13 = "INSERT INTO users(user, pass, isdoctor, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testdoctor', '$hash5', 1, 'Doctor Jones', 'Henrik Ibsens gate 1', '0010', 'drjones@aqua.no', 30, 'Call me Doctor Jones.', 1234567812345678)";
 
         self::$pdo->exec($q1);
         self::$pdo->exec($q2);

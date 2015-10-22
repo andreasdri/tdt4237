@@ -16,6 +16,7 @@ class User
     protected $age;
     protected $bankcard = '';
     protected $moneyspent = 0.0;
+    protected $moneyearned = 0.0;
     protected $isAdmin = 0;
     protected $isDoctor = 0;
 
@@ -160,6 +161,20 @@ class User
 
     public function spendMoney($money){
         $this->moneyspent += $money;
+        return $this;
+    }
+    
+    public function getMoneyearned(){
+        return $this->moneyearned;
+    }
+
+    public function setMoneyearned($moneyearned){
+        $this->moneyearned = $moneyearned;
+        return $this;
+    }
+
+    public function earnMoney($money){
+        $this->moneyearned += $money;
         return $this;
     }
 }

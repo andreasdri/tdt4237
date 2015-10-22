@@ -106,10 +106,19 @@ class UserController extends Controller
     public function showPaymentInfo()
     {
         $this->makeSureUserIsAuthenticated();
-
-        $this->render('paymentinfo.twig', [
+        
+        if($this->auth->user()->isDoctor()){
+            $this->render('doctorpaymentinfo.twig', [
             'user' => $this->auth->user()
-        ]);
+            ]);
+        }
+        
+        else {
+            $this->render('userpaymentinfo.twig', [
+            'user' => $this->auth->user()
+            ]);
+        }
+        
     }
 
     public function receiveUserEditForm()
