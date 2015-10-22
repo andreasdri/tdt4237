@@ -41,7 +41,7 @@ class Sql
         $hash5 = Hash::make('TestDoctor');
 
         $q1 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('admin', '$hash1', 1, 'admin', 'homebase', '9090')";
-        $q2 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bob', '$hash2', 0, 'Robert Green', 'Greenland Grove 9', '2010')";
+        $q2 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode, bankcard) VALUES ('bob', '$hash2', 0, 'Robert Green', 'Greenland Grove 9', '2010', 1234567890123456)";
         $q3 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode) VALUES ('bjarni', '$hash3', 0, 'Bjarni Torgmund', 'Hummerdale 12', '4120')";
         $q11 = "INSERT INTO users(user, pass, isadmin, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testuser', '$hash4', 1, 'Harald Rex', 'Henrik Ibsens gate 1', '0010', 'harald@slottet.no', 78, 'Helt konge.', 1234567812345678)";
         $q13 = "INSERT INTO users(user, pass, isdoctor, fullname, address, postcode, email, age, bio, bankcard) VALUES ('testdoctor', '$hash5', 1, 'Doctor Jones', 'Henrik Ibsens gate 1', '0010', 'drjones@aqua.no', 30, 'Call me Doctor Jones.', 1234567812345678)";
