@@ -29,36 +29,37 @@ class RegistrationFormValidation extends Validator
     private function validate($username, $password, $fullname, $address, $postcode)
     {
         if (empty($password)) {
-            $this->validationErrors[] = 'Password cannot be empty';
-        }
-
-        // http://stackoverflow.com/questions/4366730/check-if-string-contains-specific-words
-        if (strpos($password, $username) !== false || strpos($password, $fullname) !== false) {
-            $this->validationErrors[] = 'Password cannot contain username or fullname';
+            $this->validationErrors[] = 'Password cannot be empty.';
         }
 
         if (strlen($password) < 10) {
-            $this->validationErrors[] = 'Password must be at least 10 characters';
+            $this->validationErrors[] = 'Password must be at least 10 characters.';
         }
 
         if(empty($fullname)) {
-            $this->validationErrors[] = "Please write in your full name";
+            $this->validationErrors[] = "Please write in your full name.";
+        }
+        else if(strpos($password, $fullname) !== false) {
+            $this->validationErrors[] = 'Password cannot contain full name.';
         }
 
         if(empty($address)) {
-            $this->validationErrors[] = "Please write in your address";
+            $this->validationErrors[] = "Please write in your address.";
         }
 
         if(empty($postcode)) {
-            $this->validationErrors[] = "Please write in your post code";
+            $this->validationErrors[] = "Please write in your post code.";
         }
 
         if (strlen($postcode) != "4") {
-            $this->validationErrors[] = "Post code must be exactly four digits";
+            $this->validationErrors[] = "Post code must be exactly four digits.";
         }
 
-        if(strlen($username) > 100){
-            $this->validationErrors[] = 'Username too long.';
+        if(strlen($username) > 100 or strlen($username) < self::MIN_USER_LENGTH){
+            $this->validationErrors[] = 'Username must be between 3 and 100 characters.';
+        }
+        else if (strpos($password, $username) !== false) {
+            $this->validationErrors[] = 'Password cannot contain username or fullname.';
         }
 
         if($this->userRepository->findByUser($username)){
@@ -66,7 +67,7 @@ class RegistrationFormValidation extends Validator
         }
 
         if (preg_match('/^[A-Za-z0-9_]+$/', $username) === 0) {
-            $this->validationErrors[] = 'Username can only contain letters and numbers';
+            $this->validationErrors[] = 'Username can only contain letters and numbers.';
         }
     }
 }
